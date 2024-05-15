@@ -93,6 +93,8 @@ resource "aws_iam_role" "tf_apply" {
 }
 
 resource "aws_codebuild_webhook" "tf_apply" {
+  count = var.webhook_enabled ? 1 : 0
+
   project_name = aws_codebuild_project.tf_apply.name
   build_type   = "BUILD"
 
@@ -119,8 +121,10 @@ resource "aws_codebuild_webhook" "tf_apply" {
 }
 
 resource "github_repository_webhook" "tf_apply" {
+  count = var.webhook_enabled ? 1 : 0
+
   active     = true
-  events     = ["pull_request", "release"]
+  events     = ["push"]
   repository = local.repo_name[0]
 
   configuration {

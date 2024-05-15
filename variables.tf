@@ -36,6 +36,10 @@ variable "service_role_arn" {
   default = ""
 }
 
+variable "webhook_enabled" {
+  default = true
+}
+
 variable "tags" {
   type = map(string)
   default = {
