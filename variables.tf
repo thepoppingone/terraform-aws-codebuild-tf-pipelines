@@ -35,3 +35,11 @@ variable "service_role_arn" {
   type    = string
   default = ""
 }
+
+variable "tags" {
+  type = map(string)
+  default = {
+    "terraform" = "true"
+    "project"   = "test"
+  }
+}
