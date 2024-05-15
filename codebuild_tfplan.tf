@@ -114,8 +114,8 @@ resource "github_repository_webhook" "tf_plan" {
   repository = local.repo_name[0]
 
   configuration {
-    url          = aws_codebuild_webhook.tf_plan.payload_url
-    secret       = aws_codebuild_webhook.tf_plan.secret
+    url          = aws_codebuild_webhook.tf_plan[0].payload_url
+    secret       = aws_codebuild_webhook.tf_plan[0].secret
     content_type = "json"
     insecure_ssl = false
   }
