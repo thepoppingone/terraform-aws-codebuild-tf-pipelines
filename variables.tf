@@ -12,6 +12,14 @@ variable "github_tf_apply_path" {
   # "aws_accounts/seasearcher_non_prod/envs/dev/api/*"
 }
 
+variable "buildspec_tfsec_filepath" {
+  type        = string
+  default     = ""
+  description = "Location of buildspec file to reference for CI run steps for TF sec"
+  # example
+  # "aws_accounts/seasearcher_non_prod/envs/dev/api/buildspec-tfsec.yml"
+}
+
 variable "buildspec_tfplan_filepath" {
   type        = string
   default     = ""
