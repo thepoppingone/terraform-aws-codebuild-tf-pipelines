@@ -10,6 +10,8 @@ variable "codebuild_project_name" {
   description = "CodeBuild Project Name"
 }
 
+# File Paths
+
 variable "github_tf_apply_path" {
   type        = string
   default     = ""
@@ -50,17 +52,42 @@ variable "buildspec_file_repo_git_url" {
   # "https://github.com/lloydslistintelligence/lli-terraform.git"
 }
 
+# AWS Resources
+
 variable "service_role_arn" {
   type        = string
   description = "To insert ARN for overriding creation of service role in the module"
   default     = ""
 }
 
+# GitHub Webhook enablement flags
+
 variable "webhook_enabled" {
   default     = true
   description = "Allow creation of webhooks for Codebuild and Github, to disable and enable again to retrigger recreation when error occurs"
   type        = bool
 }
+
+# Module Creation Flags
+
+variable "enable_tfplan" {
+  default     = true
+  description = "Flag to conditional create TF Plan CodeBuild module"
+  type        = bool
+}
+
+variable "enable_tfapply" {
+  default     = true
+  description = "Flag to conditional create TF Apply CodeBuild module"
+  type        = bool
+}
+
+variable "enable_tfsec_trivy" {
+  default     = true
+  description = "Flag to conditional create TFSec Trivy CodeBuild module"
+  type        = bool
+}
+
 
 variable "tags" {
   type = map(string)
