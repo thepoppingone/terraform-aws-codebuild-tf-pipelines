@@ -1,9 +1,9 @@
 
-resource "aws_codebuild_project" "tf_plan" {
-  name          = "${var.codebuild_project_name}-tf-plan"
+resource "aws_codebuild_project" "tf_sec" {
+  name          = "${var.codebuild_project_name}-tfsec"
   description   = ""
   build_timeout = 60
-  service_role  = var.service_role_arn == "" ? try(aws_iam_role.tf_plan[0].arn, "") : var.service_role_arn
+  service_role  = var.service_role_arn == "" ? try(aws_iam_role.tf_sec[0].arn, "") : var.service_role_arn
 
   artifacts {
     type = "NO_ARTIFACTS"
@@ -48,7 +48,7 @@ resource "aws_codebuild_project" "tf_plan" {
     type                = "GITHUB"
     location            = var.buildspec_file_repo_git_url
     git_clone_depth     = 1
-    buildspec           = var.buildspec_tfplan_filepath
+    buildspec           = var.buildspec_tfsec_filepath
     report_build_status = true
 
     git_submodules_config {
@@ -56,21 +56,9 @@ resource "aws_codebuild_project" "tf_plan" {
     }
   }
 
-  # Not needed unless need internal traffic
-  # vpc_config {
-  #   vpc_id = data.aws_ssm_parameter.dev_vpc_id.value
-
-  #   subnets = tolist(split(",", data.aws_ssm_parameter.dev_private_subnet_ids.value))
-
-  #   security_group_ids = [
-  #     aws_security_group.example1.id,
-  #     aws_security_group.example2.id,
-  #   ]
-  # }
-
 }
 
-data "aws_iam_policy_document" "assume_role_tf_plan" {
+data "aws_iam_policy_document" "assume_role_tfsec" {
   statement {
     effect = "Allow"
 
@@ -83,18 +71,18 @@ data "aws_iam_policy_document" "assume_role_tf_plan" {
   }
 }
 
-resource "aws_iam_role" "tf_plan" {
+resource "aws_iam_role" "tf_sec" {
   count               = var.service_role_arn == "" ? 1 : 0
-  name                = "${var.codebuild_project_name}-tf-plan-service-role"
-  managed_policy_arns = ["arn:aws:iam::aws:policy/PowerUserAccess", "arn:aws:iam::aws:policy/IAMReadOnlyAccess"]
-  assume_role_policy  = data.aws_iam_policy_document.assume_role_tf_plan.json
+  name                = "${var.codebuild_project_name}-tfsec-service-role"
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"]
+  assume_role_policy  = data.aws_iam_policy_document.assume_role_tfsec.json
   path                = "/service-role/"
 }
 
-resource "aws_codebuild_webhook" "tf_plan" {
+resource "aws_codebuild_webhook" "tf_sec" {
   count = var.webhook_enabled ? 1 : 0
 
-  project_name = aws_codebuild_project.tf_plan.name
+  project_name = aws_codebuild_project.tf_sec.name
   build_type   = "BUILD"
 
   filter_group {
@@ -106,7 +94,7 @@ resource "aws_codebuild_webhook" "tf_plan" {
   }
 }
 
-resource "github_repository_webhook" "tf_plan" {
+resource "github_repository_webhook" "tf_sec" {
   count = var.webhook_enabled ? 1 : 0
 
   active     = true
@@ -114,8 +102,8 @@ resource "github_repository_webhook" "tf_plan" {
   repository = local.repo_name[0]
 
   configuration {
-    url          = aws_codebuild_webhook.tf_plan[0].payload_url
-    secret       = aws_codebuild_webhook.tf_plan[0].secret
+    url          = aws_codebuild_webhook.tf_sec[0].payload_url
+    secret       = aws_codebuild_webhook.tf_sec[0].secret
     content_type = "json"
     insecure_ssl = false
   }
