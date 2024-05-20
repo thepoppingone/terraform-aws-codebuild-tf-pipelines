@@ -9,40 +9,22 @@ Code Usage example can be found at <https://github.com/lloydslistintelligence/ll
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.12 |
-| <a name="requirement_github"></a> [github](#requirement\_github) | ~> 6.0 |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.12 |
-| <a name="provider_github"></a> [github](#provider\_github) | ~> 6.0 |
+No providers.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_tfapply"></a> [tfapply](#module\_tfapply) | ./modules/tfapply | n/a |
+| <a name="module_tfplan"></a> [tfplan](#module\_tfplan) | ./modules/tfplan | n/a |
+| <a name="module_tfsec_trivy"></a> [tfsec\_trivy](#module\_tfsec\_trivy) | ./modules/tfsec_trivy | n/a |
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_codebuild_project.tf_apply](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codebuild_project) | resource |
-| [aws_codebuild_project.tf_plan](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codebuild_project) | resource |
-| [aws_codebuild_project.tf_sec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codebuild_project) | resource |
-| [aws_codebuild_webhook.tf_apply](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codebuild_webhook) | resource |
-| [aws_codebuild_webhook.tf_plan](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codebuild_webhook) | resource |
-| [aws_codebuild_webhook.tf_sec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codebuild_webhook) | resource |
-| [aws_iam_role.tf_apply](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role.tf_plan](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role.tf_sec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [github_repository_webhook.tf_apply](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_webhook) | resource |
-| [github_repository_webhook.tf_plan](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_webhook) | resource |
-| [github_repository_webhook.tf_sec](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_webhook) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.assume_role_apply](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.assume_role_tf_plan](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.assume_role_tfsec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.secretmanagersonarread](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+No resources.
 
 ## Inputs
 
@@ -53,6 +35,9 @@ No modules.
 | <a name="input_buildspec_tfplan_filepath"></a> [buildspec\_tfplan\_filepath](#input\_buildspec\_tfplan\_filepath) | Location of buildspec file to reference for CI run steps for TF plan | `string` | `""` | no |
 | <a name="input_buildspec_tfsec_filepath"></a> [buildspec\_tfsec\_filepath](#input\_buildspec\_tfsec\_filepath) | Location of buildspec file to reference for CI run steps for TF sec | `string` | `""` | no |
 | <a name="input_codebuild_project_name"></a> [codebuild\_project\_name](#input\_codebuild\_project\_name) | CodeBuild Project Name | `string` | `""` | no |
+| <a name="input_enable_tfapply"></a> [enable\_tfapply](#input\_enable\_tfapply) | Flag to conditional create TF Apply CodeBuild module | `bool` | `true` | no |
+| <a name="input_enable_tfplan"></a> [enable\_tfplan](#input\_enable\_tfplan) | Flag to conditional create TF Plan CodeBuild module | `bool` | `true` | no |
+| <a name="input_enable_tfsec_trivy"></a> [enable\_tfsec\_trivy](#input\_enable\_tfsec\_trivy) | Flag to conditional create TFSec Trivy CodeBuild module | `bool` | `true` | no |
 | <a name="input_github_tf_apply_path"></a> [github\_tf\_apply\_path](#input\_github\_tf\_apply\_path) | Path of Terraform scripts to apply or plan | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | `"eu-west-1"` | no |
 | <a name="input_service_role_arn"></a> [service\_role\_arn](#input\_service\_role\_arn) | To insert ARN for overriding creation of service role in the module | `string` | `""` | no |
