@@ -71,12 +71,31 @@ data "aws_iam_policy_document" "assume_role_tfsec" {
   }
 }
 
+data "aws_iam_policy_document" "secretmanagersonarread" {
+
+  statement {
+    sid       = "ReadSonarToken"
+    effect    = "Allow"
+    resources = ["arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:svc-seasearcher-sas-sonar-token-*"]
+
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds",
+    ]
+  }
+}
+
 resource "aws_iam_role" "tf_sec" {
-  count               = var.service_role_arn == "" ? 1 : 0
-  name                = "${var.codebuild_project_name}-tfsec-service-role"
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"]
-  assume_role_policy  = data.aws_iam_policy_document.assume_role_tfsec.json
-  path                = "/service-role/"
+  count = var.service_role_arn == "" ? 1 : 0
+  name  = "${var.codebuild_project_name}-tfsec-service-role"
+  inline_policy {
+    name   = "SecretManagerReadSonarTokenOnly"
+    policy = data.aws_iam_policy_document.secretmanagersonarread.json
+  }
+  assume_role_policy = data.aws_iam_policy_document.assume_role_tfsec.json
+  path               = "/service-role/"
 }
 
 resource "aws_codebuild_webhook" "tf_sec" {
