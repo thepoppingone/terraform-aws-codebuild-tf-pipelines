@@ -74,9 +74,12 @@ data "aws_iam_policy_document" "assume_role_tfsec" {
 data "aws_iam_policy_document" "secretmanagersonarread" {
 
   statement {
-    sid       = "ReadSonarToken"
-    effect    = "Allow"
-    resources = ["arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:svc-seasearcher-sas-sonar-token-*"]
+    sid    = "ReadSonarToken"
+    effect = "Allow"
+    resources = [
+      "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:svc-seasearcher-sas-sonar-token-*",
+      "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:github_svc_pat_credentials-*"
+    ]
 
     actions = [
       "secretsmanager:GetResourcePolicy",
