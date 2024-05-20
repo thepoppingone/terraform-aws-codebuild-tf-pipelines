@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "secretmanagersonarread" {
 resource "aws_iam_role" "tf_sec" {
   count               = var.service_role_arn == "" ? 1 : 0
   name                = "${var.codebuild_project_name}-tfsec-service-role"
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess"]
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess", "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"]
   inline_policy {
     name   = "SecretManagerReadSonarTokenOnly"
     policy = data.aws_iam_policy_document.secretmanagersonarread.json
