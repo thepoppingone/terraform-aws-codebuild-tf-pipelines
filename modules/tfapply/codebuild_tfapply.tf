@@ -119,18 +119,3 @@ resource "aws_codebuild_webhook" "tf_apply" {
     }
   }
 }
-
-resource "github_repository_webhook" "tf_apply" {
-  count = var.webhook_enabled ? 1 : 0
-
-  active     = true
-  events     = ["push"]
-  repository = local.repo_name[0]
-
-  configuration {
-    url          = aws_codebuild_webhook.tf_apply[0].payload_url
-    secret       = aws_codebuild_webhook.tf_apply[0].secret
-    content_type = "json"
-    insecure_ssl = false
-  }
-}

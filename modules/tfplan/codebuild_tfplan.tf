@@ -105,18 +105,3 @@ resource "aws_codebuild_webhook" "tf_plan" {
     }
   }
 }
-
-resource "github_repository_webhook" "tf_plan" {
-  count = var.webhook_enabled ? 1 : 0
-
-  active     = true
-  events     = ["pull_request"]
-  repository = local.repo_name[0]
-
-  configuration {
-    url          = aws_codebuild_webhook.tf_plan[0].payload_url
-    secret       = aws_codebuild_webhook.tf_plan[0].secret
-    content_type = "json"
-    insecure_ssl = false
-  }
-}
