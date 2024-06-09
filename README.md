@@ -1,7 +1,5 @@
 # terraform-aws-codebuild-tf-pipelines
 
-Code Usage example can be found at <https://github.com/lloydslistintelligence/lli-aws-miil-seasearcher-non-prod-codebuild>
-
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
