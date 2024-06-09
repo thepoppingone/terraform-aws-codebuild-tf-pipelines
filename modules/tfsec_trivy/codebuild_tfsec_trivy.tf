@@ -71,13 +71,12 @@ data "aws_iam_policy_document" "assume_role_tfsec" {
   }
 }
 
-data "aws_iam_policy_document" "secretmanagersonarread" {
+data "aws_iam_policy_document" "secretmanagergithub" {
 
   statement {
     sid    = "ReadSonarToken"
     effect = "Allow"
     resources = [
-      "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:svc-seasearcher-sas-sonar-token-*",
       "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:github_svc_pat_credentials-*"
     ]
 
@@ -96,7 +95,7 @@ resource "aws_iam_role" "tf_sec" {
   managed_policy_arns = ["arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess", "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"]
   inline_policy {
     name   = "SecretManagerReadSonarTokenOnly"
-    policy = data.aws_iam_policy_document.secretmanagersonarread.json
+    policy = data.aws_iam_policy_document.secretmanagergithub.json
   }
   assume_role_policy = data.aws_iam_policy_document.assume_role_tfsec.json
   path               = "/service-role/"
